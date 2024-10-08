@@ -1,6 +1,7 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using R2022.UserConfig.Views.DisplaySettings;
 
 namespace R2022.UserConfig.Commands
 {
@@ -11,7 +12,9 @@ namespace R2022.UserConfig.Commands
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            throw new System.NotImplementedException();
+            new UpdateDisplaySettingsView().Show();
+            
+            return Result.Succeeded;
         }
     }
 }

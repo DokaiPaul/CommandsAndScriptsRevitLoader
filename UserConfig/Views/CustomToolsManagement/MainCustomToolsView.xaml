@@ -1,0 +1,87 @@
+<ui:FluentWindow x:Class="R2022.UserConfig.Views.CustomToolsManagement.MainCustomToolsView"
+                 DataContext="{Binding RelativeSource={RelativeSource Self}}"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:R2022.UserConfig.Views.CustomToolsManagement"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Auto"
+                 Width="740" Height="400" MinWidth="200" MinHeight="250"
+                 WindowStartupLocation="CenterScreen"
+                 ShowInTaskbar="False"
+                 mc:Ignorable="d">
+
+    <StackPanel>
+        <ui:TitleBar Title="Manage custom tools"></ui:TitleBar>
+
+        <ui:Card Margin="8, 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <ui:TextBlock Text="Dynamo" Width="300" TextAlignment="Center">
+                    <ui:TextBlock.Style>
+                        <Style TargetType="ui:TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=ToggleSwitch}" Value="False">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Foreground" Value="{Binding PlanitMainColor}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:TextBlock.Style>
+                </ui:TextBlock>
+                <ui:ToggleSwitch x:Name="ToggleSwitch" Margin="10 0" Click="ToggleToolsCommand" />
+                <ui:TextBlock Text="C#" Width="300"  TextAlignment="Center">
+                    <ui:TextBlock.Style>
+                        <Style TargetType="ui:TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=ToggleSwitch}" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Foreground" Value="{Binding PlanitMainColor}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:TextBlock.Style>
+                </ui:TextBlock>
+            </StackPanel>
+        </ui:Card>
+
+        <ui:Card Margin="8">
+            <ui:ListView Height="160" ItemsSource="{Binding CurrentItems}">
+                <ui:ListView.View>
+                    <ui:GridView>
+                        <ui:GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="180"
+                                           MinWidth="180" />
+                        <ui:GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"
+                                           MaxWidth="400" />
+                        <ui:GridViewColumn Header="Actions" Width="95" MinWidth="95">
+                            <ui:GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <ui:Button Content="" Margin="0 0 5 0"
+                                                   Command="{Binding DataContext.CommandChangeTheme, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                                                   Icon="{ui:SymbolIcon WindowEdit20}"
+                                                   MouseOverBackground="{Binding DataContext.EditItemBackground, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" />
+                                        <ui:Button Content=""
+                                                   Command="{Binding DataContext.CommandChangeTheme, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                                                   Icon="{ui:SymbolIcon Delete28}"
+                                                   MouseOverBackground="{Binding DataContext.DeleteItemBackground, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ui:GridViewColumn.CellTemplate>
+                        </ui:GridViewColumn>
+                    </ui:GridView>
+                </ui:ListView.View>
+            </ui:ListView>
+        </ui:Card>
+
+        <ui:Card Margin="8">
+            <ui:Button Content="Add new tool"
+                       Command="{Binding CommandChangeTheme}"
+                       Icon="{ui:SymbolIcon AddSquare24}"
+                       MouseOverBackground="{Binding AddItemBackground}"
+                       Width="130" />
+        </ui:Card>
+    </StackPanel>
+
+</ui:FluentWindow>

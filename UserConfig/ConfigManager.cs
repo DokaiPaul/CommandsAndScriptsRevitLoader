@@ -12,7 +12,8 @@ namespace R2022.UserConfig
         private string[] _buttonNamesToExclude;
         private DynamoScriptButtonData[] _customDynamoTools;
         private CSharpButtonData[] _customCsharpTools;
-        
+        private About _aboutInfo;
+
         public ConfigManager()
         {
             ParsePresetFile();
@@ -30,12 +31,18 @@ namespace R2022.UserConfig
             _buttonNamesToExclude = config.displayPreset.disabled.baseButtons;
             
             ExtractCustomTools(config);
+            ExtractAboutInfo(config);
         }
         
         private void ExtractCustomTools(PluginConfig config)
         {
             _customDynamoTools = config.customScriptItems.dynamo;
             _customCsharpTools = config.customScriptItems.csharp;
+        }
+        
+        private void ExtractAboutInfo(PluginConfig config)
+        {
+            _aboutInfo = config.about;
         }
         
         public string[] GetButtonNamesToExclude()
@@ -51,6 +58,11 @@ namespace R2022.UserConfig
         public CSharpButtonData[] GetCustomCsharpTools()
         {
             return _customCsharpTools;
+        }
+
+        public About GetAboutInfo()
+        {
+            return _aboutInfo;
         }
     }
 }

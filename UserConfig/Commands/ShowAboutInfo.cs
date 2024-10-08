@@ -1,6 +1,7 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using R2022.Types;
 
 namespace R2022.UserConfig.Commands
 {
@@ -10,12 +11,13 @@ namespace R2022.UserConfig.Commands
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            // return dialogBox.Show("About", "This is a test message");
             var dialogBox = new TaskDialog("About");
             
+            var configManager = new ConfigManager();
+            About aboutInfo = configManager.GetAboutInfo();
+            
             dialogBox.TitleAutoPrefix = false;
-            // [-] - Implement returning the version of the plugin and other important information. Maybe add roles as developers and show other important information that were hidden for regular users.
-            dialogBox.MainContent = "This is a test message";
+            dialogBox.MainContent = $"Main information about Planit plugin.\nHere are collected main set of tools used for boosting your productivity. You can use them or even add custom tools powered by Dynamo or C# via settings in the plugin. \n\nVersion: {aboutInfo.version}\nDevelopers: {string.Join(", ", aboutInfo.developers)}";
             dialogBox.Show();
             
             return Result.Succeeded;

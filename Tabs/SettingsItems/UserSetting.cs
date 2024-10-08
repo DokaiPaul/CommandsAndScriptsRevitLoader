@@ -35,7 +35,7 @@ namespace R2022.Tabs.SettingsItems
                 new DllButtonData(
                     "Custom scripts management",
                     assemblyLocation,
-                    $"{rootNamespace}.OpenCustomItemsManagement",
+                    $"{rootNamespace}.OpenCustomToolsManagement",
                     null,
                     "Here you can modify display settings of the current tab."),
                 

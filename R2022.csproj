@@ -11,6 +11,7 @@
         <RootNamespace>R2022</RootNamespace>
         <AssemblyName>R2022</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <UseWPF>true</UseWPF>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,83 +34,115 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="DynamoApplications">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoApplications.dll</HintPath>
+        <Reference Include="AdWindows">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AdWindows.dll</HintPath>
           <Private>False</Private>
+        </Reference>
+        <Reference Include="DynamoApplications">
+            <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoApplications.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="DynamoCore">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoCore.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoCore.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="DynamoRevitDS">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\Revit\DynamoRevitDS.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\Revit\DynamoRevitDS.dll</HintPath>
+            <Private>False</Private>
         </Reference>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\NewtonSoft.Json.dll</HintPath>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+            <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
+        <Reference Include="PresentationCore"/>
+        <Reference Include="PresentationFramework"/>
         <Reference Include="RevitAPI">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="RevitAPIUI">
-          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="ricaun.Revit.Mvvm.1.1.0">
+            <HintPath>..\..\..\..\..\..\ProgramData\Autodesk\ApplicationPlugins\RevitAddin.WpfUi.Sample.bundle\Contents\RevitAddin.WpfUi.Sample\1.1.0\2019\ricaun.Revit.Mvvm.1.1.0.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Xaml" />
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="System.Net.Http"/>
+        <Reference Include="System.Xaml"/>
         <Reference Include="System.Xml"/>
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="WindowsBase" />
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="WindowsBase"/>
+        <Reference Include="Wpf.Ui, Version=3.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\WPF-UI.3.0.5\lib\net472\Wpf.Ui.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ButtonUtils\BasePullButton.cs" />
-        <Compile Include="ButtonUtils\CSharpButtonData.cs" />
-        <Compile Include="ButtonUtils\DllButtonData.cs" />
-        <Compile Include="ButtonUtils\DynamoScriptButtonData.cs" />
-        <Compile Include="StartApplication.cs" />
+        <Compile Include="ButtonUtils\BasePullButton.cs"/>
+        <Compile Include="ButtonUtils\CSharpButtonData.cs"/>
+        <Compile Include="ButtonUtils\DllButtonData.cs"/>
+        <Compile Include="ButtonUtils\DynamoScriptButtonData.cs"/>
+        <Compile Include="StartApplication.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Tabs\Custom\CSharpTools.cs" />
-        <Compile Include="Tabs\Custom\DynamoTools.cs" />
-        <Compile Include="Tabs\PlanitProcessItems\B10Structure.cs" />
-        <Compile Include="Tabs\PlanitProcessItems\C10Interior.cs" />
-        <Compile Include="Tabs\PlanitProcessItems\D20Plumbing.cs" />
-        <Compile Include="Tabs\PlanitProcessItems\General.cs" />
-        <Compile Include="Tabs\RedmineItems\RedmineTask.cs" />
-        <Compile Include="Tabs\SettingsItems\UserSetting.cs" />
-        <Compile Include="Types\CustomScriptItems.cs" />
-        <Compile Include="Types\DisplayPreset.cs" />
-        <Compile Include="Types\PluginConfig.cs" />
-        <Compile Include="UserConfig\Commands\OpenCustomItemsManagement.cs" />
-        <Compile Include="UserConfig\Commands\OpenDisplayManagement.cs" />
-        <Compile Include="UserConfig\Commands\ShowAboutInfo.cs" />
-        <Compile Include="UserConfig\ConfigManager.cs" />
-        <Compile Include="Utils\Dynamo\DynamoClassGenerator.cs" />
-        <Compile Include="Utils\FolderManager.cs" />
+        <Compile Include="Tabs\Custom\CSharpTools.cs"/>
+        <Compile Include="Tabs\Custom\DynamoTools.cs"/>
+        <Compile Include="Tabs\PlanitProcessItems\B10Structure.cs"/>
+        <Compile Include="Tabs\PlanitProcessItems\C10Interior.cs"/>
+        <Compile Include="Tabs\PlanitProcessItems\D20Plumbing.cs"/>
+        <Compile Include="Tabs\PlanitProcessItems\General.cs"/>
+        <Compile Include="Tabs\RedmineItems\RedmineTask.cs"/>
+        <Compile Include="Tabs\SettingsItems\UserSetting.cs"/>
+        <Compile Include="Types\CustomScriptItems.cs"/>
+        <Compile Include="Types\DisplayPreset.cs"/>
+        <Compile Include="Types\PluginConfig.cs"/>
+        <Compile Include="UserConfig\Commands\OpenCustomToolsManagement.cs" />
+        <Compile Include="UserConfig\Commands\OpenDisplayManagement.cs"/>
+        <Compile Include="UserConfig\Commands\ShowAboutInfo.cs"/>
+        <Compile Include="UserConfig\ConfigManager.cs"/>
+        <Compile Include="UserConfig\Views\CustomToolsManagement\MainCustomToolsView.xaml.cs">
+            <DependentUpon>MainCustomToolsView.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="UserConfig\Views\DisplaySettings\UpdateDisplaySettingsView.xaml.cs">
+          <DependentUpon>UpdateDisplaySettingsView.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Utils\Dynamo\DynamoClassGenerator.cs"/>
+        <Compile Include="Utils\FolderManager.cs"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Resources\Default.png" />
-      <Content Include="Resources\Default_16.png" />
-      <Content Include="Resources\PullButtonImages\B10 Structure.png" />
-      <Content Include="Resources\PullButtonImages\CSharp Logo.png" />
-      <Content Include="Resources\PullButtonImages\Dynamo Logo.png" />
-      <Content Include="Resources\PullButtonImages\Redmine Logo.ico" />
-      <Content Include="Resources\PullButtonImages\Revit Logo.png" />
-      <Content Include="Resources\PullButtonImages\Settings.png" />
-      <Content Include="Resources\PullButtonImages\D20 Plumbing.png" />
-      <Content Include="Resources\PullButtonImages\C10 Interior.png" />
+        <Content Include="Resources\Default.png"/>
+        <Content Include="Resources\Default_16.png"/>
+        <Content Include="Resources\PullButtonImages\B10 Structure.png"/>
+        <Content Include="Resources\PullButtonImages\CSharp Logo.png"/>
+        <Content Include="Resources\PullButtonImages\Dynamo Logo.png"/>
+        <Content Include="Resources\PullButtonImages\Redmine Logo.ico"/>
+        <Content Include="Resources\PullButtonImages\Revit Logo.png"/>
+        <Content Include="Resources\PullButtonImages\Settings.png"/>
+        <Content Include="Resources\PullButtonImages\D20 Plumbing.png"/>
+        <Content Include="Resources\PullButtonImages\C10 Interior.png"/>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Resources\PushButtonImages\" />
+        <Folder Include="Resources\PushButtonImages\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Page Include="UserConfig\Views\CustomToolsManagement\MainCustomToolsView.xaml" />
+        <Page Include="UserConfig\Views\DisplaySettings\UpdateDisplaySettingsView.xaml" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+
+    <!-- Copy main dll to the local addin folder for constantly testing-->
+<!--    <Target Name="CopyToRevitAddins" AfterTargets="Build">-->
+<!--        <PropertyGroup>-->
+<!--            <UserProfilePath>$(UserProfile)\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin</UserProfilePath>-->
+<!--        </PropertyGroup>-->
+<!--        <Copy SourceFiles="$(OutputPath)R2022.dll" DestinationFolder="$(UserProfilePath)"/>-->
+<!--    </Target>-->
+
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
