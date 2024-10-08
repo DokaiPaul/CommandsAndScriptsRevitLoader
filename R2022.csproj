@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{9B377B11-14C2-4435-9B75-99EDA88C9D7A}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>R2022</RootNamespace>
+        <AssemblyName>R2022</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="DynamoApplications">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoApplications.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="DynamoCore">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\DynamoCore.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="DynamoRevitDS">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\AddIns\DynamoForRevit\Revit\DynamoRevitDS.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\NewtonSoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="RevitAPI">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="RevitAPIUI">
+          <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Xml"/>
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="ButtonUtils\BasePullButton.cs" />
+        <Compile Include="ButtonUtils\CSharpButtonData.cs" />
+        <Compile Include="ButtonUtils\DllButtonData.cs" />
+        <Compile Include="ButtonUtils\DynamoScriptButtonData.cs" />
+        <Compile Include="StartApplication.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Tabs\Custom\CSharpTools.cs" />
+        <Compile Include="Tabs\Custom\DynamoTools.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\B10Structure.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\C10Interior.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\D20Plumbing.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\General.cs" />
+        <Compile Include="Tabs\RedmineItems\RedmineTask.cs" />
+        <Compile Include="Tabs\SettingsItems\UserSetting.cs" />
+        <Compile Include="Types\CustomScriptItems.cs" />
+        <Compile Include="Types\DisplayPreset.cs" />
+        <Compile Include="Types\PluginConfig.cs" />
+        <Compile Include="UserConfig\Commands\OpenCustomItemsManagement.cs" />
+        <Compile Include="UserConfig\Commands\OpenDisplayManagement.cs" />
+        <Compile Include="UserConfig\Commands\ShowAboutInfo.cs" />
+        <Compile Include="UserConfig\ConfigManager.cs" />
+        <Compile Include="Utils\Dynamo\DynamoClassGenerator.cs" />
+        <Compile Include="Utils\FolderManager.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Resources\Default.png" />
+      <Content Include="Resources\Default_16.png" />
+      <Content Include="Resources\PullButtonImages\B10 Structure.png" />
+      <Content Include="Resources\PullButtonImages\CSharp Logo.png" />
+      <Content Include="Resources\PullButtonImages\Dynamo Logo.png" />
+      <Content Include="Resources\PullButtonImages\Redmine Logo.ico" />
+      <Content Include="Resources\PullButtonImages\Revit Logo.png" />
+      <Content Include="Resources\PullButtonImages\Settings.png" />
+      <Content Include="Resources\PullButtonImages\D20 Plumbing.png" />
+      <Content Include="Resources\PullButtonImages\C10 Interior.png" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Resources\PushButtonImages\" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>
