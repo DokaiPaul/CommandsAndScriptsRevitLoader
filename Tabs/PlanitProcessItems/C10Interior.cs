@@ -39,9 +39,9 @@ namespace R2022.Tabs.PlanitProcessItems
             string dllFolder = @"C:\Users\" + userName +
                                @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\Dynamo\DLLs\";
 
-            var dynamoButtonsData = new List<DynamoScriptButtonData>
+            var dynamoButtonsData = new List<DynamoScriptCustomButtonData>
             {
-                new DynamoScriptButtonData("BeamSystems for Ceilings",
+                new DynamoScriptCustomButtonData("BeamSystems for Ceilings",
                     DynamoFolderPath + "BeamSystemsForCeilings.dyn",
                     ImageRootPath + "Default_16.png"),
 

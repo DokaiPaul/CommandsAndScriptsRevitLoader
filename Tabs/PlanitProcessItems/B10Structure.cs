@@ -39,14 +39,14 @@ namespace R2022.Tabs.PlanitProcessItems
             string dllFolder = @"C:\Users\" + userName +
                                @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\Dynamo\DLLs\";
 
-            var dynamoButtonsData = new List<DynamoScriptButtonData>
+            var dynamoButtonsData = new List<DynamoScriptCustomButtonData>
             {
-                new DynamoScriptButtonData(
+                new DynamoScriptCustomButtonData(
                     "APL Overlay",
                     DynamoFolderPath + "APL_Overlay.dyn",
                     ImageRootPath + @"\PullButtonImages\B10 Structure.png"),
 
-                new DynamoScriptButtonData("Tags Updater",
+                new DynamoScriptCustomButtonData("Tags Updater",
                     DynamoFolderPath + "TagsUpdater_D1.34.dyn",
                     ImageRootPath + @"\PullButtonImages\B10 Structure.png"),
             };

@@ -5,7 +5,6 @@ using R2022.UserConfig.Views.DisplaySettings;
 
 namespace R2022.UserConfig.Commands
 {
-    // [-] - Implement the class for managing display settings (visibility) of the current tab
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
     public class OpenDisplayManagement: IExternalCommand

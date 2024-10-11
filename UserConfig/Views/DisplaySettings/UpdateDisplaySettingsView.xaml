@@ -19,7 +19,7 @@
         <ui:Card Margin="8">
             <ui:Button Content="Change theme"
                        Command="{Binding CommandChangeTheme}"
-                       Icon="{ui:SymbolIcon PhoneUpdate20}"
+                       Icon="{ui:SymbolIcon DarkTheme24}"
                        MouseOverBackground="{Binding AddItemBackground}"/>
         </ui:Card>
     </StackPanel>

@@ -1,17 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using R2022.ButtonUtils;
 using R2022.UserConfig;
-using R2022.Utils;
 
 namespace R2022.Tabs.Custom
 {
     public class CSharpTools : BasePullButtonItem
     {
-        private readonly CSharpButtonData[] _customCsharpTools;
+        private readonly CSharpCustomButtonData[] _customCsharpTools;
 
         public CSharpTools(RibbonPanel ribbonPanel, string buttonName, string[] disabledButtons) : base(ribbonPanel,
             buttonName, disabledButtons)
@@ -35,11 +33,11 @@ namespace R2022.Tabs.Custom
 
         protected override void AddDllButtons()
         {
-            foreach (CSharpButtonData item in _customCsharpTools)
+            foreach (CSharpCustomButtonData item in _customCsharpTools)
             {
                 string name = item.ButtonName;
                 string description = item.Description;
-                string filePath = item.DllPath;
+                string filePath = item.FilePath;
                 string imagePath = item.ButtonImagePath;
                 string toolName = Path.GetFileNameWithoutExtension(filePath);
                 string commandName = item.CommandName;

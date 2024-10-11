@@ -1,52 +1,88 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
-using R2022.ButtonUtils;
+using Autodesk.Windows;
 using ricaun.Revit.Mvvm;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 
 namespace R2022.UserConfig.Views.DisplaySettings
 {
     public partial class UpdateDisplaySettingsView
     {
         public IRelayCommand CommandChangeTheme { get; private set; }
-        
+
 
         public UpdateDisplaySettingsView()
         {
-            CommandChangeTheme = new RelayCommand(UpdateTheme);
+            DataContext = this;
 
+            SetCommandsHandlers();
 
             InitializeComponent();
             InitializeWindow();
 
+            SetThemeHandling();
+            SetCloseWindowByKey();
+        }
+
+
+        private void ApplicationThemeManager_Changed(ApplicationTheme currentApplicationTheme,
+            Color systemAccent)
+        {
             ApplicationThemeManager.Apply(this);
+        }
+
+        private void UpdateTheme()
+        {
+            string stringTheme;
+            ApplicationTheme theme;
+            if (ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light)
+            {
+                theme = ApplicationTheme.Dark;
+                stringTheme = "Dark";
+            }
+            else
+            {
+                theme = ApplicationTheme.Light;
+                stringTheme = "Light";
+            }
+
+            ApplicationThemeManager.Apply(theme);
+
+            var configManager = new ConfigManager();
+            configManager.SetTheme(stringTheme);
+        }
+
+        private void SetCommandsHandlers()
+        {
+            CommandChangeTheme = new RelayCommand(UpdateTheme);
+        }
+
+        private void SetThemeHandling()
+        {
+            var configManager = new ConfigManager();
+            string stringTheme = configManager.GetTheme();
+            ApplicationTheme theme = stringTheme == "Light"
+                ? ApplicationTheme.Light
+                : ApplicationTheme.Dark;
+
+            ApplicationThemeManager.Apply(theme);
+            ApplicationThemeManager.Apply(this);
+            
             ApplicationThemeManager.Changed += ApplicationThemeManager_Changed;
             this.Unloaded += (s, e) => { ApplicationThemeManager.Changed -= ApplicationThemeManager_Changed; };
+        }
 
+        private void SetCloseWindowByKey()
+        {
             this.KeyDown += (s, e) =>
             {
-                if (e.Key == System.Windows.Input.Key.Escape)
+                if (e.Key == Key.Escape)
                 {
                     this.Close();
                 }
             };
-        }
-        
-
-        private void ApplicationThemeManager_Changed(ApplicationTheme currentApplicationTheme,
-            System.Windows.Media.Color systemAccent)
-        {
-            ApplicationThemeManager.Apply(this);
-        }
-        
-        private void UpdateTheme()
-        {
-            var theme = ApplicationThemeManager.GetAppTheme() != ApplicationTheme.Light
-                ? ApplicationTheme.Light
-                : ApplicationTheme.Dark;
-            ApplicationThemeManager.Apply(theme);
         }
 
 
@@ -54,8 +90,8 @@ namespace R2022.UserConfig.Views.DisplaySettings
 
         private void InitializeWindow()
         {
-            new System.Windows.Interop.WindowInteropHelper(this)
-            { Owner = Autodesk.Windows.ComponentManager.ApplicationWindow };
+            new WindowInteropHelper(this)
+                { Owner = ComponentManager.ApplicationWindow };
         }
 
         #endregion

@@ -58,19 +58,19 @@ namespace R2022.ButtonUtils
             Button.AddPushButton(buttonData);
         }
 
-        protected void GenerateDynamoPushButtons(List<DynamoScriptButtonData> buttons, string dllFolder)
+        protected void GenerateDynamoPushButtons(List<DynamoScriptCustomButtonData> buttons, string dllFolder)
         {
-            foreach (DynamoScriptButtonData buttonData in buttons)
+            foreach (DynamoScriptCustomButtonData buttonData in buttons)
             {
                 // extract name of dynamo script
-                string[] parts = buttonData.ScriptPath.Split('\\');
+                string[] parts = buttonData.FilePath.Split('\\');
                 string scriptName = parts[parts.Length - 1].Split('.')[0];
 
                 // generate class handler of the command
                 string classPath = dllFolder + scriptName + ".dll";
 
                 Type dynamicClass =
-                    DynamoClassGenerator.GenerateDynamoCommandClass(scriptName, buttonData.ScriptPath, classPath);
+                    DynamoClassGenerator.GenerateDynamoCommandClass(scriptName, buttonData.FilePath, classPath);
 
                 // add button to the pulldown button
                 AddPushButton(

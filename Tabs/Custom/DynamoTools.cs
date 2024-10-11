@@ -4,13 +4,12 @@ using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using R2022.ButtonUtils;
 using R2022.UserConfig;
-using R2022.Utils;
 
 namespace R2022.Tabs.Custom
 {
     public class DynamoTools : BasePullButtonItem
     {
-        private readonly DynamoScriptButtonData[] _customDynamoTools;
+        private readonly DynamoScriptCustomButtonData[] _customDynamoTools;
         
         public DynamoTools(RibbonPanel ribbonPanel, string buttonName, string[] disabledButtons) : base(ribbonPanel, buttonName, disabledButtons)
         {
@@ -41,16 +40,16 @@ namespace R2022.Tabs.Custom
             string dllFolder = @"C:\Users\" + userName +
                                @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\Dynamo\DLLs\";
             
-            var dynamoButtonsData = new List<DynamoScriptButtonData>();
+            var dynamoButtonsData = new List<DynamoScriptCustomButtonData>();
 
-            foreach (DynamoScriptButtonData item in _customDynamoTools)
+            foreach (DynamoScriptCustomButtonData item in _customDynamoTools)
             {
                 string buttonName = item.ButtonName;
-                string scriptPath = item.ScriptPath;
+                string scriptPath = item.FilePath;
                 string imagePath = item.ButtonImagePath;
                 string description = item.Description;
 
-                dynamoButtonsData.Add(new DynamoScriptButtonData(buttonName, scriptPath, imagePath, description));
+                dynamoButtonsData.Add(new DynamoScriptCustomButtonData(buttonName, scriptPath, imagePath, description));
             }
 
             base.GenerateDynamoPushButtons(dynamoButtonsData, dllFolder);

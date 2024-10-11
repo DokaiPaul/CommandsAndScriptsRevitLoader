@@ -4,7 +4,7 @@ namespace R2022.Types
 {
     public struct CustomScriptItems
     {
-        public DynamoScriptButtonData[] dynamo;
-        public CSharpButtonData[] csharp;
+        public DynamoScriptCustomButtonData[] dynamo;
+        public CSharpCustomButtonData[] csharp;
     }
 }

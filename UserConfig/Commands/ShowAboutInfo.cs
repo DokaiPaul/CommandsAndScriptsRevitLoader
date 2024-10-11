@@ -17,7 +17,8 @@ namespace R2022.UserConfig.Commands
             About aboutInfo = configManager.GetAboutInfo();
             
             dialogBox.TitleAutoPrefix = false;
-            dialogBox.MainContent = $"Main information about Planit plugin.\nHere are collected main set of tools used for boosting your productivity. You can use them or even add custom tools powered by Dynamo or C# via settings in the plugin. \n\nVersion: {aboutInfo.version}\nDevelopers: {string.Join(", ", aboutInfo.developers)}";
+            dialogBox.MainContent = 
+                $"Main information about Planit plugin.\n\nHere are collected main set of tools used for boosting your productivity. You can use them or even add custom tools powered by Dynamo or C# via settings in the plugin. \n\nVersion: {aboutInfo.version}\nDevelopers: {string.Join(", ", aboutInfo.developers)}";
             dialogBox.Show();
             
             return Result.Succeeded;
