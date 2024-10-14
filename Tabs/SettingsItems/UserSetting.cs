@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
-using R2022.ButtonUtils;
+using R2022.Utils.Buttons;
 
 namespace R2022.Tabs.SettingsItems
 {
@@ -44,7 +44,14 @@ namespace R2022.Tabs.SettingsItems
                     assemblyLocation,
                     $"{rootNamespace}.OpenDisplayManagement",
                     null,
-                    "Here you can add your own custom dynamo scripts and tools powered by C#."),
+                    "Here you can add your own custom dynamo scripts and tools powered by C#."), 
+                
+                new DllButtonData(
+                    "Refresh panel",
+                    assemblyLocation,
+                    $"{rootNamespace}.RefreshRibbonTab",
+                    null,
+                    "Refresh ribbon panel display."),
                 
                 new DllButtonData(
                     "About",

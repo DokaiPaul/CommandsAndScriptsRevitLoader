@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
-using R2022.Utils;
 using R2022.Utils.Dynamo;
 
-namespace R2022.ButtonUtils
+namespace R2022.Utils.Buttons
 {
     public abstract class BasePullButtonItem
     {
@@ -49,13 +48,21 @@ namespace R2022.ButtonUtils
         protected void AddPushButton(string path, string buttonText, string startClass, string imagePath,
             string description = "")
         {
-            var buttonData = new PushButtonData(startClass, buttonText, path, startClass)
+            try
             {
-                ToolTip = description
-            };
-            if (imagePath != null) buttonData.LargeImage = new BitmapImage(new Uri(imagePath));
+                var buttonData = new PushButtonData(startClass, buttonText, path, startClass)
+                {
+                    ToolTip = description
+                };
+                if (imagePath != null) buttonData.LargeImage = new BitmapImage(new Uri(imagePath));
 
-            Button.AddPushButton(buttonData);
+                Button.AddPushButton(buttonData);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                throw new InvalidOperationException($"Failed to add push button: {buttonText}", ex);
+            }
         }
 
         protected void GenerateDynamoPushButtons(List<DynamoScriptCustomButtonData> buttons, string dllFolder)

@@ -1,9 +1,11 @@
-using R2022.ENUM;
+using System;
+using R2022.Types.ENUM;
 
-namespace R2022.ButtonUtils
+namespace R2022.Utils.Buttons
 {
     public struct DynamoScriptCustomButtonData : ICustomButtonData
     {
+        public Guid Id { get; set; }
         public string FilePath { get; set; }
         public string ButtonName { get; set; }
         public string ButtonImagePath { get; set; }
@@ -20,6 +22,7 @@ namespace R2022.ButtonUtils
             
             CommandName = "R2022.RunDynamoScript";
             ToolType = ToolTypes.Dynamo;
+            Id = Guid.NewGuid();
         }
     }
 }

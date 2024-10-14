@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -6,10 +7,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using Autodesk.Revit.UI;
 using Autodesk.Windows;
-using R2022.ButtonUtils;
-using R2022.ENUM;
+using R2022.Types.ENUM;
+using R2022.Utils;
+using R2022.Utils.Buttons;
 using ricaun.Revit.Mvvm;
+using Wpf.Ui;
 using Wpf.Ui.Appearance;
 
 namespace R2022.UserConfig.Views.CustomToolsManagement
@@ -31,11 +35,11 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                 OnPropertyChanged();
             }
         }
-
+        
         public MainCustomToolsView()
         {
             DataContext = this;
-
+            
             SetCommandsHandlers();
 
             InitializeComponent();
@@ -71,7 +75,8 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
             {
                 CurrentItems.Add(new ToolItem
                 {
-                    Name = item.ButtonName, 
+                    Id = item.Id,
+                    Name = item.ButtonName,
                     Description = item.Description,
                     FilePath = item.FilePath,
                     IconPath = item.ButtonImagePath,
@@ -82,11 +87,13 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
             var dynamoItems = configManager.GetCustomDynamoTools();
             foreach (DynamoScriptCustomButtonData item in dynamoItems)
             {
-                CurrentItems.Add(new ToolItem 
+                CurrentItems.Add(new ToolItem
                 {
-                    Name = item.ButtonName, 
+                    Id = item.Id,
+                    Name = item.ButtonName,
                     Description = item.Description,
                     FilePath = item.FilePath,
+                    IconPath = item.ButtonImagePath,
                     Type = item.ToolType
                 });
             }
@@ -132,12 +139,8 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
         {
             if (!(sender is Button button) || !(button.DataContext is ToolItem toolItem)) return;
 
-            MessageBoxResult result = MessageBox.Show($"Are you sure you want to edit the tool: {toolItem.FilePath}?",
-                "Edit Tool", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result != MessageBoxResult.Yes) return;
-            
-            var window = new UpdateToolView(toolItem.Name, toolItem.Description, toolItem.Type, toolItem.FilePath, toolItem.IconPath);
+            var window = new UpdateToolView(toolItem.Id, toolItem.Name, toolItem.Description, toolItem.Type,
+                toolItem.FilePath, toolItem.IconPath);
             window.ShowDialog();
 
             PopulateCustomToolItems();
@@ -151,10 +154,10 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                 "Delete Tool", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result != MessageBoxResult.Yes) return;
-            
+
             var configManager = new ConfigManager();
-            configManager.RemoveTool(toolItem.FilePath, toolItem.IconPath, toolItem.Type);
-                
+            configManager.RemoveTool(toolItem.Id, toolItem.Type);
+
             PopulateCustomToolItems();
         }
 
@@ -179,6 +182,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
     public class ToolItem
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string FilePath { get; set; }

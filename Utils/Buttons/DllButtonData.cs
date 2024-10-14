@@ -1,4 +1,4 @@
-namespace R2022.ButtonUtils
+namespace R2022.Utils.Buttons
 {
     public struct DllButtonData
     {

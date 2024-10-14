@@ -1,4 +1,4 @@
-namespace R2022.ENUM
+namespace R2022.Types.ENUM
 {
     public enum ToolTypes
     {

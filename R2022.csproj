@@ -81,30 +81,26 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ButtonUtils\BasePullButton.cs"/>
-        <Compile Include="ButtonUtils\CSharpCustomButtonData.cs" />
-        <Compile Include="ButtonUtils\DllButtonData.cs"/>
-        <Compile Include="ButtonUtils\DynamoScriptCustomButtonData.cs" />
-        <Compile Include="ButtonUtils\ICustomButtonData.cs" />
         <Compile Include="Constants\WindowColors\Buttons\Buttons.cs" />
-        <Compile Include="ENUM\ToolTypes.cs" />
-        <Compile Include="StartApplication.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Tabs\Custom\CSharpTools.cs"/>
-        <Compile Include="Tabs\Custom\DynamoTools.cs"/>
-        <Compile Include="Tabs\PlanitProcessItems\B10Structure.cs"/>
-        <Compile Include="Tabs\PlanitProcessItems\C10Interior.cs"/>
-        <Compile Include="Tabs\PlanitProcessItems\D20Plumbing.cs"/>
-        <Compile Include="Tabs\PlanitProcessItems\General.cs"/>
-        <Compile Include="Tabs\RedmineItems\RedmineTask.cs"/>
-        <Compile Include="Tabs\SettingsItems\UserSetting.cs"/>
-        <Compile Include="Types\CustomScriptItems.cs"/>
-        <Compile Include="Types\DisplayPreset.cs"/>
-        <Compile Include="Types\PluginConfig.cs"/>
+        <Compile Include="StartApplication.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Tabs\Custom\CSharpTools.cs" />
+        <Compile Include="Tabs\Custom\DynamoTools.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\B10Structure.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\C10Interior.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\D20Plumbing.cs" />
+        <Compile Include="Tabs\PlanitProcessItems\General.cs" />
+        <Compile Include="Tabs\RedmineItems\RedmineTask.cs" />
+        <Compile Include="Tabs\SettingsItems\UserSetting.cs" />
+        <Compile Include="Types\CustomScriptItems.cs" />
+        <Compile Include="Types\DisplayPreset.cs" />
+        <Compile Include="Types\ENUM\ToolTypes.cs" />
+        <Compile Include="Types\PluginConfig.cs" />
         <Compile Include="UserConfig\Commands\OpenCustomToolsManagement.cs" />
-        <Compile Include="UserConfig\Commands\OpenDisplayManagement.cs"/>
-        <Compile Include="UserConfig\Commands\ShowAboutInfo.cs"/>
-        <Compile Include="UserConfig\ConfigManager.cs"/>
+        <Compile Include="UserConfig\Commands\OpenDisplayManagement.cs" />
+        <Compile Include="UserConfig\Commands\RefreshRibbonTab.cs" />
+        <Compile Include="UserConfig\Commands\ShowAboutInfo.cs" />
+        <Compile Include="UserConfig\ConfigManager.cs" />
         <Compile Include="UserConfig\Views\CustomToolsManagement\AddNewToolView.xaml.cs">
           <DependentUpon>AddNewToolView.xaml</DependentUpon>
         </Compile>
@@ -117,23 +113,30 @@
         <Compile Include="UserConfig\Views\DisplaySettings\UpdateDisplaySettingsView.xaml.cs">
           <DependentUpon>UpdateDisplaySettingsView.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Utils\Dynamo\DynamoClassGenerator.cs"/>
-        <Compile Include="Utils\FolderManager.cs"/>
+        <Compile Include="Utils\Buttons\BasePullButton.cs" />
+        <Compile Include="Utils\Buttons\CSharpCustomButtonData.cs" />
+        <Compile Include="Utils\Buttons\DllButtonData.cs" />
+        <Compile Include="Utils\Buttons\DynamoScriptCustomButtonData.cs" />
+        <Compile Include="Utils\Buttons\ICustomButtonData.cs" />
+        <Compile Include="Utils\Dynamo\DynamoClassGenerator.cs" />
+        <Compile Include="Utils\FolderManager.cs" />
+        <Compile Include="Utils\RibbonPanelManager.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="Resources\Default.png"/>
-        <Content Include="Resources\Default_16.png"/>
-        <Content Include="Resources\PullButtonImages\B10 Structure.png"/>
-        <Content Include="Resources\PullButtonImages\CSharp Logo.png"/>
-        <Content Include="Resources\PullButtonImages\Dynamo Logo.png"/>
-        <Content Include="Resources\PullButtonImages\Redmine Logo.ico"/>
-        <Content Include="Resources\PullButtonImages\Revit Logo.png"/>
-        <Content Include="Resources\PullButtonImages\Settings.png"/>
-        <Content Include="Resources\PullButtonImages\D20 Plumbing.png"/>
-        <Content Include="Resources\PullButtonImages\C10 Interior.png"/>
+        <Content Include="Resources\Default.png" />
+        <Content Include="Resources\Default_16.png" />
+        <Content Include="Resources\PullButtonImages\B10 Structure.png" />
+        <Content Include="Resources\PullButtonImages\CSharp Logo.png" />
+        <Content Include="Resources\PullButtonImages\Dynamo Logo.png" />
+        <Content Include="Resources\PullButtonImages\Redmine Logo.ico" />
+        <Content Include="Resources\PullButtonImages\Revit Logo.png" />
+        <Content Include="Resources\PullButtonImages\Settings.png" />
+        <Content Include="Resources\PullButtonImages\D20 Plumbing.png" />
+        <Content Include="Resources\PullButtonImages\C10 Interior.png" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Resources\PushButtonImages\"/>
+        <Folder Include="ExternalToolFiles\" />
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config"/>

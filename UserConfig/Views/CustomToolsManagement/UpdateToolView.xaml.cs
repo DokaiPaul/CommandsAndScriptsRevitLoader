@@ -9,8 +9,8 @@ using System.Windows.Media.Imaging;
 using Autodesk.Revit.DB;
 using Autodesk.Windows;
 using Microsoft.Win32;
-using R2022.ButtonUtils;
-using R2022.ENUM;
+using R2022.Types.ENUM;
+using R2022.Utils.Buttons;
 using ricaun.Revit.Mvvm;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
@@ -29,8 +29,9 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
         public IRelayCommand CommandAddTool { get; private set; }
         public IRelayCommand CommandClose { get; private set; }
 
-        private string _toolName;
+        private Guid _toolId;
 
+        private string _toolName;
         public string ToolName
         {
             get => _toolName;
@@ -90,14 +91,14 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
         }
 
 
-        public UpdateToolView(string toolName, string toolDescription, ToolTypes selectedFileType, string selectedFilePath,
+        public UpdateToolView(Guid toolId, string toolName, string toolDescription, ToolTypes selectedFileType, string selectedFilePath,
             string selectedImagePath)
         {
             DataContext = this;
 
             CommandOpenFilePicker = new RelayCommand(OpenFilePicker);
             CommandOpenImagePicker = new RelayCommand(OpenImagePicker);
-            CommandAddTool = new RelayCommand(AddTool);
+            CommandAddTool = new RelayCommand(UpdateTool);
             CommandClose = new RelayCommand(() => this.Close());
 
             InitializeComponent();
@@ -107,6 +108,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
             SetCloseWindowByKey();
             
             ToolName = toolName;
+            _toolId = toolId;
             ToolDescription = toolDescription;
             SelectedFileType = selectedFileType == ToolTypes.CSharp ? "C#" : "Dynamo";
             SelectedFilePath = selectedFilePath;
@@ -200,7 +202,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
             ApplicationThemeManager.Apply(this);
         }
 
-        private void AddTool()
+        private void UpdateTool()
         {
             string errorMessage = String.Empty;
 
@@ -241,8 +243,8 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                         _toolDescription
                     );
                 }
-
-                configManager.AddNewTool(newTool);
+                newTool.Id = _toolId; // Set the ID of the tool to the existing ID
+                configManager.UpdateTool(newTool);
                 
                 this.Close();
             }

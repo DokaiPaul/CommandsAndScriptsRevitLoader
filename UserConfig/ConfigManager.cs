@@ -1,19 +1,16 @@
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using R2022.ButtonUtils;
-using R2022.ENUM;
 using R2022.Types;
-using static R2022.ENUM.ToolTypes;
+using R2022.Types.ENUM;
+using R2022.Utils.Buttons;
 
 namespace R2022.UserConfig
 {
     public class ConfigManager
     {
-        private const string PresetLocation =
-            @"C:\Users\_DOP_\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\mainConfig.json";
+        private readonly string _presetLocation;
 
         private PluginConfig _pluginConfig;
 
@@ -25,8 +22,13 @@ namespace R2022.UserConfig
 
         public ConfigManager()
         {
+            string userName = Environment.UserName;
+            _presetLocation = @"C:\Users\" + userName + @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\mainConfig.json";
+            
             ParsePresetFile();
         }
+
+        #region Accessors
 
         public string[] GetButtonNamesToExclude()
         {
@@ -53,6 +55,8 @@ namespace R2022.UserConfig
         {
             return _theme;
         }
+
+        #endregion
 
         public void SetTheme(string theme)
         {
@@ -119,51 +123,156 @@ namespace R2022.UserConfig
             }
 
             // Strict order of the file copying is important: first copy the icon, then the file and update the config file
-            
+
             // TODO: wrap the file copying in a try-catch block. If error happens, show a message box with the error message
             if (!String.IsNullOrEmpty(toolData.ButtonImagePath))
                 File.Copy(toolData.ButtonImagePath,
                     Path.Combine(targetIconFolder, Path.GetFileName(toolData.ButtonImagePath)));
-            
+
             // TODO: wrap the file copying in a try-catch block. If error happens, show a message box with the error message
             if (toolData.FilePath != null)
                 File.Copy(toolData.FilePath, Path.Combine(targetFileFolder, fileName));
 
             UpdateConfigFile(_pluginConfig);
         }
-        
-        public void RemoveTool(string filePath, string iconPath, ToolTypes toolType)
+
+        public void RemoveTool(Guid toolId, ToolTypes toolType)
         {
+            ICustomButtonData toolToRemove;
+            if (toolType == ToolTypes.Dynamo)
+            {
+                toolToRemove = _customDynamoTools
+                    .FirstOrDefault(tool => tool.Id == toolId);
+
+                _customDynamoTools = _customDynamoTools
+                    .Where(tool => tool.Id != toolId)
+                    .ToArray();
+                _pluginConfig.customScriptItems.dynamo = _customDynamoTools;
+            }
+            else
+            {
+                toolToRemove = _customCsharpTools
+                    .FirstOrDefault(tool => tool.Id == toolId);
+
+                _customCsharpTools = _customCsharpTools
+                    .Where(tool => tool.Id != toolId)
+                    .ToArray();
+                _pluginConfig.customScriptItems.csharp = _customCsharpTools;
+            }
+
+
+            // TODO: Think how to clean icon when it is not used by Revit
+            try
+            {
+                if (!String.IsNullOrEmpty(toolToRemove.ButtonImagePath))
+                    File.Delete(toolToRemove.ButtonImagePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error during deleting the icon file.");
+                Console.WriteLine(e);
+            }
+
+            // TODO: wrap the file deletion in a try-catch block. If error happens, show a message box with the error message
+            File.Delete(toolToRemove.FilePath);
+            
+            // TODO: set flag and check if error was catched during execution.
+            // If so, show a message box with the error message and process transaction rollback 
+
+            UpdateConfigFile(_pluginConfig);
+        }
+
+        public void UpdateTool(ICustomButtonData updatedToolData)
+        {
+            ToolTypes toolType = updatedToolData.ToolType;
+            var allTools = toolType == ToolTypes.Dynamo
+                ? _customDynamoTools.Cast<ICustomButtonData>().ToArray()
+                : _customCsharpTools.Cast<ICustomButtonData>().ToArray();
+
+            ICustomButtonData originalToolData = allTools
+                .FirstOrDefault(t => t.Id == updatedToolData.Id);
+            if (originalToolData == null)
+                throw new Exception("Error during searching the tool to be updated.");
+
+            string currentUser = Environment.UserName;
+            if (originalToolData.FilePath != updatedToolData.FilePath)
+            {
+                string fileName = Path.GetFileName(updatedToolData.FilePath);
+                bool nameUsed = IsFileNameUsed(fileName, toolType);
+                // Check if the file name is already used by another tool. But name could be the same as for tool to be updated
+                if (nameUsed && fileName != Path.GetFileName(originalToolData.FilePath))
+                    throw new Exception("File with such name already exists. Change the selected file name.");
+
+                // delete the old file
+                if (originalToolData.FilePath != null)
+                    File.Delete(originalToolData.FilePath);
+
+                // copy the new file
+                string targetFileFolder = toolType == ToolTypes.Dynamo
+                    ? @"C:\Users\" + currentUser +
+                      @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\Dynamo"
+                    : @"C:\Users\" + currentUser +
+                      @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\CSharp";
+
+                // TODO: wrap the file copying in a try-catch block. If error happens, show a message box with the error message
+                if (updatedToolData.FilePath != null)
+                    File.Copy(updatedToolData.FilePath, Path.Combine(targetFileFolder, fileName));
+
+                // update the file path in the tool data to follow correct path in folder hierarchy
+                updatedToolData.FilePath = $"{targetFileFolder}\\{fileName}";
+            }
+
+            if (originalToolData.ButtonImagePath != updatedToolData.ButtonImagePath)
+            {
+                // delete the old icon
+                if (originalToolData.ButtonImagePath != null) File.Delete(originalToolData.ButtonImagePath);
+
+                // copy the new icon
+                string targetIconFolder = toolType == ToolTypes.Dynamo
+                    ? @"C:\Users\" + currentUser +
+                      @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\Dynamo\Images"
+                    : @"C:\Users\" + currentUser +
+                      @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\CSharp\Images";
+
+                // TODO: wrap the file copying in a try-catch block. If error happens, show a message box with the error message
+                if (!String.IsNullOrEmpty(updatedToolData.ButtonImagePath))
+                    File.Copy(updatedToolData.ButtonImagePath,
+                        Path.Combine(targetIconFolder, Path.GetFileName(updatedToolData.ButtonImagePath)));
+
+                updatedToolData.ButtonImagePath =
+                    $"{targetIconFolder}\\{Path.GetFileName(updatedToolData.ButtonImagePath)}";
+            }
+
+            // replace the old tool with the updated one in the array
             if (toolType == ToolTypes.Dynamo)
             {
                 _customDynamoTools = _customDynamoTools
-                    .Where(tool => tool.FilePath != filePath)
+                    .Where(t => t.Id != updatedToolData.Id)
+                    .Append((DynamoScriptCustomButtonData)updatedToolData)
                     .ToArray();
                 _pluginConfig.customScriptItems.dynamo = _customDynamoTools;
             }
             else
             {
                 _customCsharpTools = _customCsharpTools
-                    .Where(tool => tool.FilePath != filePath)
+                    .Where(t => t.Id != updatedToolData.Id)
+                    .Append((CSharpCustomButtonData)updatedToolData)
                     .ToArray();
                 _pluginConfig.customScriptItems.csharp = _customCsharpTools;
             }
 
-
-            // TODO: think it over if we're able to delete the icon file because it might be used by Revit.
-            if (!String.IsNullOrEmpty(iconPath))
-                File.Delete(iconPath);
+            // TODO: set flag and check if error was catched during execution.
+            // If so, show a message box with the error message and process transaction rollback 
             
-            // TODO: wrap the file deletion in a try-catch block. If error happens, show a message box with the error message
-            File.Delete(filePath);
-
             UpdateConfigFile(_pluginConfig);
         }
+
+        #region Utilities
 
         private void ParsePresetFile()
         {
             // read config file
-            string content = File.ReadAllText(PresetLocation);
+            string content = File.ReadAllText(_presetLocation);
 
             // parse the JSON string
             if (string.IsNullOrEmpty(content)) return;
@@ -179,7 +288,7 @@ namespace R2022.UserConfig
         private void UpdateConfigFile(PluginConfig file)
         {
             string json = JsonConvert.SerializeObject(file, Formatting.Indented);
-            File.WriteAllText(PresetLocation, json);
+            File.WriteAllText(_presetLocation, json);
         }
 
         private void ExtractCustomTools()
@@ -208,5 +317,6 @@ namespace R2022.UserConfig
                 .Select(tool => Path.GetFileName(tool.FilePath))
                 .Any(toolName => toolName == fileName);
         }
+        #endregion
     }
 }
