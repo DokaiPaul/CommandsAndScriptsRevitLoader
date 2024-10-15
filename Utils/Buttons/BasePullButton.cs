@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using R2022.Utils.Dynamo;
@@ -76,8 +77,17 @@ namespace R2022.Utils.Buttons
                 // generate class handler of the command
                 string classPath = dllFolder + scriptName + ".dll";
 
-                Type dynamicClass =
-                    DynamoClassGenerator.GenerateDynamoCommandClass(scriptName, buttonData.FilePath, classPath);
+                Type dynamicClass = null;
+                try
+                {
+                    dynamicClass =
+                        DynamoClassGenerator.GenerateDynamoCommandClass(scriptName, buttonData.FilePath, classPath);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    continue; // skip this button creation
+                }
 
                 // add button to the pulldown button
                 AddPushButton(

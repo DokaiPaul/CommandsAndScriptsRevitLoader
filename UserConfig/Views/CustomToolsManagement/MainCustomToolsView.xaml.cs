@@ -156,7 +156,16 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
             if (result != MessageBoxResult.Yes) return;
 
             var configManager = new ConfigManager();
-            configManager.RemoveTool(toolItem.Id, toolItem.Type);
+
+            try
+            {
+                configManager.RemoveTool(toolItem.Id, toolItem.Type);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             PopulateCustomToolItems();
         }

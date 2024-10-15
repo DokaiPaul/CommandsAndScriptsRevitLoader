@@ -13,5 +13,21 @@ namespace R2022.Utils
                 file.Delete();
             }
         }
+        
+        public static void TryDeleteAllFilesInFolder(string folderPath)
+        {
+            var di = new DirectoryInfo(folderPath);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                try
+                {
+                    file.Delete();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+        }
     }
 }

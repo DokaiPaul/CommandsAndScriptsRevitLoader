@@ -28,7 +28,7 @@ namespace R2022.Tabs.Custom
 
         public override void PopulateButtonWithItems()
         {
-            this.AddDllButtons();
+            AddDllButtons();
         }
 
         protected override void AddDllButtons()

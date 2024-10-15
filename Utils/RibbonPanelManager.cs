@@ -92,7 +92,7 @@ namespace R2022.Utils
                 new CSharpTools(refreshedPanel, "C# Tools", disabledButtons)
             };
 
-            ClearDynamoDllFolder();
+            ClearDynamoDllFolder(); // action required to remove the old DLLs and they are replaced by new ones when Dynamo buttons were loaded.
             LoadPrimaryButtons(containerButtons, disabledButtons);
         }
 

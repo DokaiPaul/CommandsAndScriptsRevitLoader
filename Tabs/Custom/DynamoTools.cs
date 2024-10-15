@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using R2022.UserConfig;
+using R2022.Utils;
 using R2022.Utils.Buttons;
 
 namespace R2022.Tabs.Custom
@@ -51,7 +52,8 @@ namespace R2022.Tabs.Custom
 
                 dynamoButtonsData.Add(new DynamoScriptCustomButtonData(buttonName, scriptPath, imagePath, description));
             }
-
+            
+            FolderManager.TryDeleteAllFilesInFolder(dllFolder); // to remove all previous tools removed by user
             base.GenerateDynamoPushButtons(dynamoButtonsData, dllFolder);
         }
     }

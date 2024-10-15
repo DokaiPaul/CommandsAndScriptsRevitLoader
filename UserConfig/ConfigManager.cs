@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Autodesk.Revit.DB;
 using Newtonsoft.Json;
 using R2022.Types;
 using R2022.Types.ENUM;
@@ -173,8 +174,7 @@ namespace R2022.UserConfig
                 Console.WriteLine(e);
             }
 
-            // TODO: wrap the file deletion in a try-catch block. If error happens, show a message box with the error message
-            File.Delete(toolToRemove.FilePath);
+            SafeDeleteFile(toolToRemove.FilePath);
             
             // TODO: set flag and check if error was catched during execution.
             // If so, show a message box with the error message and process transaction rollback 
@@ -204,8 +204,8 @@ namespace R2022.UserConfig
                     throw new Exception("File with such name already exists. Change the selected file name.");
 
                 // delete the old file
-                if (originalToolData.FilePath != null)
-                    File.Delete(originalToolData.FilePath);
+                if (!String.IsNullOrEmpty(originalToolData.FilePath))
+                    SafeDeleteFile(originalToolData.FilePath);
 
                 // copy the new file
                 string targetFileFolder = toolType == ToolTypes.Dynamo
@@ -316,6 +316,30 @@ namespace R2022.UserConfig
             return tools
                 .Select(tool => Path.GetFileName(tool.FilePath))
                 .Any(toolName => toolName == fileName);
+        }
+        
+        private void SafeDeleteFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine("Most likely file in use: " + ex.Message);
+                throw new UnauthorizedAccessException("It seems that file You try to delete/replace is used by Revit. Try to restart Revit and repeat desired action with custom tool again before You launch the tool in the Revit.");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("File in use or other I/O error: " + ex.Message);
+                throw new IOException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An unexpected error occurred: " + ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
         #endregion
     }

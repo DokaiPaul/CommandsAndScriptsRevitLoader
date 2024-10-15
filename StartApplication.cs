@@ -19,7 +19,7 @@ namespace R2022
             _application = application;
             _ribbonPanelManager = new RibbonPanelManager(TabName, _application);
             
-            ClearDynamoDllsFolder(); // clear Dynamo/DLLs folder before loading new ones. (Created every time when Revit is launched)
+            ClearDynamoBackup(); // clear all dynamo backup files
 
             _ribbonPanelManager.GenerateRibbonPanels();
 
@@ -35,17 +35,17 @@ namespace R2022
 
         #region Local utilities
         
-        private void ClearDynamoDllsFolder()
+        private void ClearDynamoBackup()
         {
             string userName = Environment.UserName;
-
+        
             string staticScriptFolderPath = @"C:\Users\" + userName +
-                                   @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\Dynamo\DLLs\";
-            FolderManager.DeleteAllFilesInFolder(staticScriptFolderPath); // clear generated dlls for base dynamo scripts
+                                   @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\Dynamo\backup\";
+            FolderManager.DeleteAllFilesInFolder(staticScriptFolderPath);
             
             string customScriptFolderPath = @"C:\Users\" + userName +
-                                            @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\Dynamo\DLLs\";
-            FolderManager.DeleteAllFilesInFolder(customScriptFolderPath); // clear generated dlls for custom added dynamo scripts
+                                            @"\AppData\Roaming\Autodesk\Revit\Addins\2022\PlanitPlugin\CustomTools\Dynamo\backup\";
+            FolderManager.DeleteAllFilesInFolder(customScriptFolderPath);
         }
         #endregion
     }

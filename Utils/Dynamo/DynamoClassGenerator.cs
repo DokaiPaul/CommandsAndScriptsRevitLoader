@@ -1,5 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
+using System.IO;
 using Microsoft.CSharp;
 
 namespace R2022.Utils.Dynamo
@@ -8,6 +9,21 @@ namespace R2022.Utils.Dynamo
     {
         public static Type GenerateDynamoCommandClass(string className, string scriptPath, string dllPath)
         {
+            // Check if the DLL file already exists
+            if (File.Exists(dllPath))
+            {
+                try
+                {
+                    // Attempt to delete the existing DLL file
+                    File.Delete(dllPath);
+                }
+                catch (Exception ex)
+                {
+                    // Return a message to the user if the file cannot be deleted
+                    throw new InvalidOperationException($"The DLL file '{dllPath}' could not be deleted. Please restart Revit and try again.", ex);
+                }
+            }
+            
             string classCode = $@"
             using System.Collections.Generic;
             using Autodesk.Revit.Attributes;
@@ -54,6 +70,7 @@ namespace R2022.Utils.Dynamo
                 OutputAssembly = dllPath
             };
             
+            // TODO: check for routes for current assemblies before creating installer
             // Add references to necessary assemblies
             parameters.ReferencedAssemblies.Add("RevitAPI.dll");
             parameters.ReferencedAssemblies.Add("RevitAPIUI.dll");

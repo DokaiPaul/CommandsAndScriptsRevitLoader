@@ -32,6 +32,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
         private Guid _toolId;
 
         private string _toolName;
+
         public string ToolName
         {
             get => _toolName;
@@ -91,7 +92,8 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
         }
 
 
-        public UpdateToolView(Guid toolId, string toolName, string toolDescription, ToolTypes selectedFileType, string selectedFilePath,
+        public UpdateToolView(Guid toolId, string toolName, string toolDescription, ToolTypes selectedFileType,
+            string selectedFilePath,
             string selectedImagePath)
         {
             DataContext = this;
@@ -106,7 +108,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
             SetThemeHandling();
             SetCloseWindowByKey();
-            
+
             ToolName = toolName;
             _toolId = toolId;
             ToolDescription = toolDescription;
@@ -123,15 +125,28 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
         private void OpenFilePicker()
         {
+            string filter;
+            string title;
+            if (_selectedFileType == "C#")
+            {
+                filter = "C# files (*.dll)|*.dll";
+                title = "Select a C# file for custom tool.";
+            }
+            else
+            {
+                filter = "Dynamo files (*.dyn)|*.dyn";
+                title = "Select a Dynamo file for custom tool.";
+            }
+
             var openFileDialog = new OpenFileDialog
             {
-                Filter = "Custom tools (*.dll, *.dyn)|*.dll;*.dyn",
-                Title = "Select a file for custom tool."
+                Filter = filter,
+                Title = title
             };
 
             if (openFileDialog.ShowDialog() != true) return;
             SelectedFilePath = openFileDialog.FileName;
-            
+
             string fileExtension = Path.GetExtension(SelectedFilePath);
             switch (fileExtension)
             {
@@ -142,7 +157,6 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                     SelectedFileType = "Dynamo";
                     break;
             }
-
         }
 
         private void OpenImagePicker()
@@ -180,7 +194,7 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
             ApplicationThemeManager.Apply(theme);
             ApplicationThemeManager.Apply(this);
-            
+
             ApplicationThemeManager.Changed += ApplicationThemeManager_Changed;
             this.Unloaded += (s, e) => { ApplicationThemeManager.Changed -= ApplicationThemeManager_Changed; };
         }
@@ -208,8 +222,6 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
             if (String.IsNullOrEmpty(_toolName))
                 errorMessage += "Tool name is required for a new tool.\n";
-            if (_selectedFileType == null)
-                errorMessage += "Please select a file type for the new tool.\n";
             if (String.IsNullOrEmpty(_selectedFilePath))
                 errorMessage += "Please select a file for the new tool.\n";
 
@@ -243,9 +255,19 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                         _toolDescription
                     );
                 }
+
                 newTool.Id = _toolId; // Set the ID of the tool to the existing ID
-                configManager.UpdateTool(newTool);
-                
+
+                try
+                {
+                    configManager.UpdateTool(newTool);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 this.Close();
             }
             catch (Exception e)
@@ -253,12 +275,6 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            // Add the new tool to the database
-            // ...
-
-            // Close the window
-            // this.Close();
         }
 
         #region Utilities

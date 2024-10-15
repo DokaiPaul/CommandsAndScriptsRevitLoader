@@ -196,8 +196,6 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
 
             if (String.IsNullOrEmpty(_toolName))
                 errorMessage += "Tool name is required for a new tool.\n";
-            if (_selectedFileType == null)
-                errorMessage += "Please select a file type for the new tool.\n";
             if (String.IsNullOrEmpty(_selectedFilePath))
                 errorMessage += "Please select a file for the new tool.\n";
 
@@ -241,12 +239,6 @@ namespace R2022.UserConfig.Views.CustomToolsManagement
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            // Add the new tool to the database
-            // ...
-
-            // Close the window
-            // this.Close();
         }
 
         #region Utilities
